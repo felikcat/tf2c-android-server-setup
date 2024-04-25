@@ -1,34 +1,36 @@
 :imagesdir: images/
 
-. https://mobaxterm.mobatek.net/[MobaXterm] is used to access the VPS and has drag and drop functionality (FTP/SFTP support). On other operating systems that aren't Windows, you can replicate this functionality by using https://filezilla-project.org/[FileZilla].
+. https://mobaxterm.mobatek.net/[MobaXterm] is used to access the server and has drag and drop functionality (FTP/SFTP support). On other operating systems that aren't Windows, you can replicate this functionality by using https://filezilla-project.org/[FileZilla].
 
-. Login under the user account you made for hosting this server, such as "hosting" (`# useradd -m -G users -s /bin/bash hosting`). Do not run the server as root (#)!
-
-. Install the following on the VPS (Debian): +
+. As root, install the following on the server (Debian): +
 `# add-apt-repository multiverse; dpkg --add-architecture i386; apt update` +
 `# apt install steamcmd`
 
+. Login under the user account you made for hosting this server, such as "hosting" (`# useradd -m -G users -s /bin/bash hosting`). Do not run the server as root (#)!
+- And ensure you are inside the home folder of your user, such as `/home/hosting`.
+
 . Download the Server from the *#installation* section of the https://discord.com/invite/gXaxjbdNs5[TF2Classic: Android Community Server]; you need https://discord.com/[Discord] for this step to access the text channel.
 
-. Copy that zip from your PC over to the VPS, then extract what that zip is called, which in my case was: +
+. Copy that zip from your PC over to the server, then extract what that zip is called, which in my case was: +
 `$ unzip linserver-tf2classic-source-engine-17b06224.zip`
 
-. In *#installation*, under TF2Classic Resources click "Download Resources", right-click on the Download button to "Copy Link", then feed that link into your VPS: +
-`wget https://cloud.tyabus.co.uk/s/KGsMW9NxpNKyGrk/download/EXAMPLE_ONLY_DONT_USE.7z`
+. In *#installation*, under TF2Classic Resources click "Download Resources", right-click on the Download button to "Copy Link", then feed that link into your server: +
+`$ wget https://cloud.tyabus.co.uk/s/KGsMW9NxpNKyGrk/download/EXAMPLE_ONLY_DONT_USE.7z`
 
 . Extract the 7z you downloaded: +
-`7zz x tf2classic.7z`
+`$ 7zz x tf2classic.7z`
 
 . Move the extracted contents to the correct directory: +
-`mv tf2classic/* game_tf2classic_dedicated/tf2classic`
+`$ mv tf2classic/* game_tf2classic_dedicated/tf2classic`
 
 . Get a legal copy of Half-Life 2, or download TF2 to get the folders "hl2" and "platform". Then, compress those two folders: +
 image:explorer_iNQX4Y5pu8.png[] +
 image:explorer_dz8Ap15x1l.png[]
 
 . Extract those HL2 files, or TF2's depending on what route you took: +
-`7zz x "Half-Life 2.7z"`
+`$ cd ${HOME}/game_tf2classic_dedicated` +
+`$ 7zz x "Half-Life 2.7z"`
 
-. Running the server: +
-`./game_tf2classic_dedicated/srcds_linux -console -game tf2classic/ +map ctf_2fort +maxplayers 24`
+. Running the server (must be inside the "game_tf2classic_dedicated" directory): +
+`$ ./srcds_linux -console -game tf2classic/ +map ctf_2fort +maxplayers 24`
 
