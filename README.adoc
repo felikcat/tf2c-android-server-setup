@@ -12,4 +12,4 @@ image:explorer_iNQX4Y5pu8.png[] +
 image:explorer_dz8Ap15x1l.png[]
 
 . `7zz x Half-Life\ 2.7z`
-. `./game_tf2classic_dedicated/srcds_linux -game tf2classic/`
+. `./game_tf2classic_dedicated/srcds_linux -console -game tf2classic/ +map ctf_2fort
