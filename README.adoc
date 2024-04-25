@@ -2,7 +2,7 @@
 
 . https://mobaxterm.mobatek.net/[MobaXterm] is used to access the VPS and has drag and drop functionality (FTP/SFTP support). On other operating systems that aren't Windows, you can replicate this functionality by using https://filezilla-project.org/[FileZilla].
 
-. Login under the user account you made for hosting this server, such as `# useradd hosting`. Do not run the server as root (#)!
+. Login under the user account you made for hosting this server, such as "hosting" (`# useradd -m -G users -s /bin/bash hosting`). Do not run the server as root (#)!
 
 . Install the following on the VPS (Debian): +
 `# add-apt-repository multiverse; dpkg --add-architecture i386; apt update` +
