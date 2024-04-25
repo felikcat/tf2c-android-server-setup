@@ -2,10 +2,16 @@
 
 . https://mobaxterm.mobatek.net/[MobaXterm] is used to access the VPS and has drag and drop functionality (FTP/SFTP support). On other operating systems that aren't Windows, you can replicate this functionality by using https://filezilla-project.org/[FileZilla].
 
+. Login under the user account you made for hosting this server, such as `# useradd hosting`. Do not run the server as root (#)!
+
+. Install the following on the VPS (Debian): +
+`# add-apt-repository multiverse; dpkg --add-architecture i386; apt update` +
+`# apt install steamcmd`
+
 . Download the Server from the *#installation* section of the https://discord.com/invite/gXaxjbdNs5[TF2Classic: Android Community Server]; you need https://discord.com/[Discord] for this step to access the text channel.
 
-. Extract what that zip is called, which in my case was: +
-`unzip linserver-tf2classic-source-engine-17b06224.zip`
+. Copy that zip from your PC over to the VPS, then extract what that zip is called, which in my case was: +
+`$ unzip linserver-tf2classic-source-engine-17b06224.zip`
 
 . In *#installation*, under TF2Classic Resources click "Download Resources", right-click on the Download button to "Copy Link", then feed that link into your VPS: +
 `wget https://cloud.tyabus.co.uk/s/KGsMW9NxpNKyGrk/download/EXAMPLE_ONLY_DONT_USE.7z`
@@ -24,5 +30,5 @@ image:explorer_dz8Ap15x1l.png[]
 `7zz x "Half-Life 2.7z"`
 
 . Running the server: +
-`./game_tf2classic_dedicated/srcds_linux -console -game tf2classic/ +map ctf_2fort`
+`./game_tf2classic_dedicated/srcds_linux -console -game tf2classic/ +map ctf_2fort +maxplayers 24`
 
