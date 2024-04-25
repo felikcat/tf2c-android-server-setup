@@ -1,0 +1,15 @@
+:imagesdir: images/
+
+. https://mobaxterm.mobatek.net/[MobaXterm] is used to access the VPS. On other operating systems that aren't Windows, you can replicate MobaXterm's drag and drop file functionality by using https://filezilla-project.org/[FileZilla].
+
+. `unzip linserver-tf2classic-source-engine-17b06224.zip`
+. `7zz x tf2classic.7z`
+
+. `mv tf2classic/* game_tf2classic_dedicated/tf2classic`
+
+. Get a legal copy of Half-Life 2, or download TF2 to get the folders "hl2" and "platform". Then, compress those two folders: +
+image:explorer_iNQX4Y5pu8.png[] +
+image:explorer_dz8Ap15x1l.png[]
+
+. `7zz x Half-Life\ 2.7z`
+. `./game_tf2classic_dedicated/srcds_linux -game tf2classic/`
