@@ -1,9 +1,15 @@
 :imagesdir: images/
 
-. https://mobaxterm.mobatek.net/[MobaXterm] is used to access the VPS. On other operating systems that aren't Windows, you can replicate MobaXterm's drag and drop file functionality by using https://filezilla-project.org/[FileZilla].
+. https://mobaxterm.mobatek.net/[MobaXterm] is used to access the VPS and has drag and drop functionality (FTP/SFTP support). On other operating systems that aren't Windows, you can replicate this functionality by using https://filezilla-project.org/[FileZilla].
 
-. `unzip linserver-tf2classic-source-engine-17b06224.zip`
-. `7zz x tf2classic.7z`
+. Download the Server from the #installation section of the https://discord.com/invite/gXaxjbdNs5[TF2Classic: Android Community Server]; you need https://discord.com/[Discord] for this step to access the text channel.
+
+. Extract what that zip is called, which in my case was: +
+`unzip linserver-tf2classic-source-engine-17b06224.zip`
+
+. In #installation, under TF2Classic Resources click "Download Resources", right-click on the Download button to "Copy Link", so we can feed it into the VPS as follows: +
+`wget https://cloud.tyabus.co.uk/s/KGsMW9NxpNKyGrk/download/EXAMPLE_ONLY_DONT_USE.7z` +
+`7zz x tf2classic.7z`
 
 . `mv tf2classic/* game_tf2classic_dedicated/tf2classic`
 
@@ -12,4 +18,5 @@ image:explorer_iNQX4Y5pu8.png[] +
 image:explorer_dz8Ap15x1l.png[]
 
 . `7zz x Half-Life\ 2.7z`
-. `./game_tf2classic_dedicated/srcds_linux -console -game tf2classic/ +map ctf_2fort
+. `./game_tf2classic_dedicated/srcds_linux -console -game tf2classic/ +map ctf_2fort`
+
