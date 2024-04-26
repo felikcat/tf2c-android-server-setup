@@ -30,5 +30,8 @@ image:explorer_dz8Ap15x1l.png[]
 `$ 7zz x "Half-Life 2.7z"`
 
 . Running the server (must be inside the "game_tf2classic_dedicated" directory): +
-`$ ./srcds_linux -console -game tf2classic/ +map ctf_2fort +maxplayers 24`
+`$ ./srcds_linux -console -game tf2classic +map ctf_2fort +maxplayers 24`
+
+NOTE: Doing `-game tf2classic/` will break listing to the master server, which is where other players can Find Servers. +
+If you wish to host a hidden server, run with `-nomaster` instead.
 
