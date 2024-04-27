@@ -15,7 +15,7 @@ NOTE: This tutorial is for systemd Linux distros such as Debian, Ubuntu, Arch, o
 
 . https://mobaxterm.mobatek.net/[MobaXterm] is used to access the server and has drag and drop functionality (FTP/SFTP support). Alternatively you can replicate the drag and drop functionality by using https://filezilla-project.org/[FileZilla]. 
 
-. To get all the required system dependencies for hosting a TF2C Android server, firstly, https://developer.valvesoftware.com/wiki/SteamCMD#Linux[install SteamCMD on the server].
+. To get all the required system dependencies for hosting a TF2C Android server, https://developer.valvesoftware.com/wiki/SteamCMD#Linux[install SteamCMD on the server].
 
 . Login under the user account you made for hosting this server, such as "hosting" (`# useradd -m -G users -s /bin/bash hosting`). Do not run the server as root (#)!
 - And ensure you are inside the home folder of your user, such as `/home/hosting`.
