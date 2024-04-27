@@ -9,10 +9,13 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+== Setting up the game server files
+
+NOTE: This tutorial is for systemd Linux distros such as Debian, Ubuntu, Arch, or Fedora. If you have solutions for non-systemd distros, mention them to me in an issue and I'll test them out and add them here.
+
 . https://mobaxterm.mobatek.net/[MobaXterm] is used to access the server and has drag and drop functionality (FTP/SFTP support). Alternatively you can replicate the drag and drop functionality by using https://filezilla-project.org/[FileZilla]. 
 
 . To get all the required system dependencies for hosting a TF2C Android server, firstly, https://developer.valvesoftware.com/wiki/SteamCMD#Linux[install SteamCMD on the server].
-- Now, install the following on that server (for your Linux distribution, the naming may differ): `screen`
 
 . Login under the user account you made for hosting this server, such as "hosting" (`# useradd -m -G users -s /bin/bash hosting`). Do not run the server as root (#)!
 - And ensure you are inside the home folder of your user, such as `/home/hosting`.
@@ -39,22 +42,89 @@ image:explorer_dz8Ap15x1l.png[]
 `$ cd ${HOME}/game_tf2classic_dedicated` +
 `$ 7zz x "Half-Life 2.7z"`
 
-. Running the primary server. Remember, *you must be inside the "game_tf2classic_dedicated" directory*: +
-`$ cd ${HOME}/game_tf2classic_dedicated && screen -S "tf2c-android-ctf" ./srcds_linux -console -game tf2classic +map ctf_2fort`
+== Configuring the TF2C Android server
+* Inside `${HOME}/game_tf2classic_dedicated/tf2classic` is a folder called `cfg`. This is where you will create or edit `server.cfg`, with the following contents:
+[source,sh]
+----
+hostname "Your server name here"
+sv_password ""
+sv_lan 0
 
-. Running a second server, for example, to have a different map rotation: +
-`$ cd ${HOME}/game_tf2classic_dedicated && screen -S "tf2c-android-dm" ./srcds_linux -console -game tf2classic +map dm_2fort +servercfgfile "server_dm.cfg" +mapcyclefile "mapcycle_dm.txt"`
+// Remote CONtrol; granting you the ability to run commands on the server while running.
+rcon_password "Change me to something secure!"
 
-NOTE: Doing `-game tf2classic/` will break listing to the master server, which is where other players can Find Servers. +
-If you wish to host a hidden server, run with `-nomaster` instead.
+// Ban a user from RCON after giving a wrong password 5 times, for 1440 minutes.
+sv_rcon_maxfailures 5
+sv_rcon_banpenalty 1440
 
-.How to access your servers afterwards
-. List the available screen sessions: +
-`$ screen -ls`
+// Both teams can talk to each other through voice chat.
+sv_alltalk 1
 
-. Let's say there's a screen on "27396", you'd do the following to attach to it: +
-`$ screen -r 27396`
+// Useful for keeping track of players, any server crashes, so on.
+log on
+sv_logbans 1
 
-. Hit kbd:[Ctrl + a] then kbd:[d] to detach from the screen session; this will not close it, which is good.
+// Time limit until a map change.
+mp_timelimit 30
 
-. For other usage tips on Screen, see https://wiki.archlinux.org/title/GNU_Screen[Arch Linux's wiki page] on it.
+// Less delay than 20 tick. This is more CPU taxing on the server if a player is above 20FPS.
+sv_minupdaterate 30
+sv_mincmdrate 30
+
+// 100 updaterate in 32-bit TF2 causes precision/timing issues; should also apply to TF2C Android.
+sv_maxupdaterate 66
+sv_maxcmdrate 66
+----
+
+== Running the server as a system service
+
+NOTE: - If you wish to host a hidden server, add `-nomaster`. +
+- You do not need `+servercfgfile` and `+mapcyclefile` unless you are hosting multiple servers.
+
+* Edit as NON-root (the 'servers' account as an example): `${HOME}/game_tf2classic_dedicated/run_dm.sh`
+[source,sh]
+----
+#!/bin/sh
+
+./srcds_linux -console -game tf2classic +map dm_2fort +servercfgfile "server_dm.cfg" +mapcyclefile "mapcycle_dm.txt"
+----
+
+* Login as root, then edit: `/etc/systemd/system/tf2c-android-dm.service`
+[source,sh]
+----
+[Unit]
+Description=TF2C Android Deathmatch
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=hosting
+WorkingDirectory=/home/hosting/game_tf2classic_dedicated
+
+ExecStart=/usr/bin/sh run_dm.sh
+
+# Restart the server when it is stopped or crashed after 30 seconds
+# Comment out RestartSec if you want to restart immediately
+Restart=always
+RestartSec=30
+
+StandardInput=null
+
+[Install]
+WantedBy=multi-user.target
+----
+* Enable then start the server: +
+`# systemctl enable --now tf2c-android-dm`
+
+NOTE: If your server doesn't start up, you might have the wrong permissions. +
+Running this as root `chown hosting:hosting run_dm.sh` will correct that, given that `run_dm.sh` is in your current directory. +
+If not, just put the full path to it, such as `chown hosting:hosting /home/hosting/game_tf2classic_dedicated/run_dm.sh`
+
+== How to monitor your servers afterwards
+
+* Server logs are stored at: `${HOME}/game_tf2classic_dedicated/tf2classic/logs`
+
+* To see systemd's messages for the service: `journalctl -fu tf2c-android-dm`
+
+* To run commands on the server, *rcon* has to be used.
+- This would mean joining your server, and doing say, `rcon changelevel cp_dustbowl`.
