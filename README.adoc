@@ -1,4 +1,13 @@
+:experimental:
 :imagesdir: images/
+ifdef::env-github[]
+:icons:
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 . https://mobaxterm.mobatek.net/[MobaXterm] is used to access the server and has drag and drop functionality (FTP/SFTP support). Alternatively you can replicate the drag and drop functionality by using https://filezilla-project.org/[FileZilla]. 
 
@@ -39,3 +48,13 @@ image:explorer_dz8Ap15x1l.png[]
 NOTE: Doing `-game tf2classic/` will break listing to the master server, which is where other players can Find Servers. +
 If you wish to host a hidden server, run with `-nomaster` instead.
 
+.How to access your servers afterwards
+. List the available screen sessions: +
+`$ screen -ls`
+
+. Let's say there's a screen on "27396", you'd do the following to attach to it: +
+`$ screen -r 27396`
+
+. Hit kbd:[Ctrl + a] then kbd:[d] to detach from the screen session; this will not close it, which is good.
+
+. For other usage tips on Screen, see https://wiki.archlinux.org/title/GNU_Screen[Arch Linux's wiki page] on it.
