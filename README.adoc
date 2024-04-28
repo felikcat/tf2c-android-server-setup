@@ -15,7 +15,7 @@ NOTE: This tutorial is for systemd Linux distros such as Debian, Ubuntu, Arch, o
 
 . https://mobaxterm.mobatek.net/[MobaXterm] is used to access the server and has drag and drop functionality (FTP/SFTP support). Alternatively you can replicate the drag and drop functionality by using https://filezilla-project.org/[FileZilla]. 
 
-. To get all the required system dependencies for hosting a TF2C Android server, https://developer.valvesoftware.com/wiki/SteamCMD#Linux[install SteamCMD on the server].
+. To get all the required system dependencies for hosting a TF2C Android server, https://developer.valvesoftware.com/wiki/SteamCMD#Linux[install SteamCMD on the server], then install `screen` for your distribution.
 
 . Login under the user account you made for hosting this server, such as "hosting" (`# useradd -m -G users -s /bin/bash hosting`). Do not run the server as root (#)!
 - And ensure you are inside the home folder of your user, such as `/home/hosting`.
@@ -86,7 +86,7 @@ NOTE: - If you wish to host a hidden server, add `-nomaster`. +
 ----
 #!/bin/sh
 
-./srcds_linux -console -game tf2classic +map dm_2fort +servercfgfile "server_dm.cfg" +mapcyclefile "mapcycle_dm.txt"
+screen -dmS "tf2c-android-dm" ./srcds_linux -console -game tf2classic +map dm_2fort +servercfgfile "server_dm.cfg" +mapcyclefile "mapcycle_dm.txt"
 ----
 
 * Login as root, then edit: `/etc/systemd/system/tf2c-android-dm.service`
@@ -98,13 +98,17 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+# The SHell script forks off into our desired process.
+Type=forking
+
+# Ensure to set the correct user and working directory (installation directory of your server) here.
 User=hosting
 WorkingDirectory=/home/hosting/game_tf2classic_dedicated
 
 ExecStart=/usr/bin/sh run_dm.sh
 
-# Restart the server when it is stopped or crashed after 30 seconds
-# Comment out RestartSec if you want to restart immediately
+# Restart the server when it is stopped or crashed after 30 seconds.
+# Comment out RestartSec if you want to restart immediately.
 Restart=always
 RestartSec=30
 
@@ -113,6 +117,7 @@ StandardInput=null
 [Install]
 WantedBy=multi-user.target
 ----
+
 * Enable then start the server: +
 `# systemctl enable --now tf2c-android-dm`
 
@@ -122,9 +127,18 @@ If not, just put the full path to it, such as `chown hosting:hosting /home/hosti
 
 == How to monitor your servers afterwards
 
+. List the available screen sessions: +
+`$ screen -ls`
+
+. Let's say there's a screen on "tf2c-android-dm", you'd do the following to attach to it: +
+`$ screen -r tf2c-android-dm`
+
+. Hit kbd:[Ctrl + a] then kbd:[d] to detach from the screen session; this will not close it, which is good.
+
+. For other usage tips on Screen, see https://wiki.archlinux.org/title/GNU_Screen[Arch Linux's wiki page] on it.
+
+
+== Other information
 * Server logs are stored at: `${HOME}/game_tf2classic_dedicated/tf2classic/logs`
 
 * To see systemd's messages for the service: `journalctl -fu tf2c-android-dm`
-
-* To run commands on the server, *rcon* has to be used.
-- This would mean joining your server, and doing say, `rcon changelevel cp_dustbowl`.
