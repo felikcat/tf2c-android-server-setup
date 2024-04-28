@@ -81,7 +81,7 @@ sv_maxcmdrate 66
 NOTE: - If you wish to host a hidden server, add `-nomaster`. +
 - You do not need `+servercfgfile` and `+mapcyclefile` unless you are hosting multiple servers.
 
-* Edit as NON-root (the 'servers' account as an example): `${HOME}/game_tf2classic_dedicated/run_dm.sh`
+* Edit as NON-root (the 'hosting' account as an example): `${HOME}/game_tf2classic_dedicated/run_dm.sh`
 [source,sh]
 ----
 #!/bin/sh
